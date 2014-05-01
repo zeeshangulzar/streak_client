@@ -5,7 +5,7 @@ module StreakClient
   # need to separate readable and writeable attributes
   class Pipeline
 
-    ASSOCIATIONS = [:stages, :boxes]
+    ASSOCIATIONS = [:stages, :boxes, :fields]
     attr_accessor :name, :description, :orgWide, :fieldNames, 
       :fieldTypes, :stages, :pipelineKey
 
@@ -15,7 +15,7 @@ module StreakClient
 
     def initialize(attributes)
       attributes.each do |attr_name, attr_value| 	
-        if self.respond_to?(attr_name) && !ASSOCIATIONS.include?(attr_name)
+        if self.respond_to?(attr_name) && !ASSOCIATIONS.include?(attr_name.to_sym)
           self.send("#{attr_name}=", attr_value) 
         end
       end
@@ -47,7 +47,7 @@ module StreakClient
 
     def boxes
       response = MultiJson.load(
-	RestClient.get("#{Pipeline.api_url}/#{self.pipelineKey}/boxes"))
+        RestClient.get("#{Pipeline.api_url}/#{self.pipelineKey}/boxes"))
       response.map {|box_attributes| Box.new(box_attributes) }
     end
 
@@ -57,12 +57,22 @@ module StreakClient
       response.map {|stage_attributes| Stage.new(stage_attributes[1]) }
     end
 
+    def fields
+      response = MultiJson.load(
+        RestClient.get(Field.pipeline_api_url(self.pipelineKey)))
+      response.map {|box_attributes| Field.new(box_attributes) }
+    end
+
     def add_stage(attributes)
       Stage.create(self.pipelineKey, attributes)
     end
 
     def add_box(attributes)
       Box.create(self.pipelineKey, attributes)
+    end
+
+    def add_field(attributes)
+      Field.create(self.pipelineKey, attributes)
     end
 
     def save!

@@ -45,6 +45,11 @@ describe StreakClient::Pipeline do
     changed_pipeline = StreakClient::Pipeline.find(pipeline_key)
     changed_pipeline.name.must_equal "New Name"
   end
+
+  it "can add and list fields" do
+    @pipeline.add_field(name: "Person", type: "PEOPLE")
+    @pipeline.fields.first.name.must_equal "Person"
+  end
   
 end
 

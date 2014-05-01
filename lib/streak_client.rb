@@ -8,6 +8,7 @@ require 'resources/snippet'
 require 'resources/stage'
 require 'resources/thread'
 require 'resources/user'
+require 'resources/field'
 
 module StreakClient
 

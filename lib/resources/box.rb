@@ -61,6 +61,11 @@ module StreakClient
         RestClient.put(Box.instance_api_url(boxKey) + "/comments", "message=#{message}"))
     end
 
+    def set_field(field_key, value)
+      response = MultiJson.load(
+        RestClient.post(Field.instance_api_url(boxKey, field_key), "{value: \"#{value}\"}", content_type: :json))
+    end
+
   end
 
 end

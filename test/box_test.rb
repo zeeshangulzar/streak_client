@@ -45,6 +45,11 @@ describe StreakClient::Box do
     response = @box.add_comment("Comment")
     response["message"].must_equal "Comment"
   end
+
+  it "can set field value" do
+    response = @box.set_field("1001","Field Value")
+    response["value"].must_equal "Field Value"
+  end
   
 end
 
