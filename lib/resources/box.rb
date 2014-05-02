@@ -63,7 +63,7 @@ module StreakClient
 
     def set_field(field_key, value)
       response = MultiJson.load(
-        RestClient.post(Field.instance_api_url(boxKey, field_key), "{value: \"#{value}\"}", content_type: :json))
+        RestClient.post(Field.instance_api_url(boxKey, field_key), {value: value}.to_json, content_type: :json))
     end
 
   end
