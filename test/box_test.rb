@@ -47,8 +47,10 @@ describe StreakClient::Box do
   end
 
   it "can set field value" do
-    response = @box.set_field("1001","Field Value")
-    response["value"].must_equal "Field Value"
+    response = @pipeline.add_field(name: "Test field", type: "TEXT_INPUT")
+    key = response.key
+    response = @box.set_field(key,"test@example.org")
+    response["value"].must_equal "test@example.org"
   end
   
 end
