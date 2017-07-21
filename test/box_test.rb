@@ -52,6 +52,9 @@ describe StreakClient::Box do
     response = @box.set_field(key,"test@example.org")
     response["value"].must_equal "test@example.org"
   end
-  
+
+  it "can add a thread" do
+    # TODO
+  end
 end
 

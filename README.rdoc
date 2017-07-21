@@ -1,8 +1,5 @@
 = Streak Client - Ruby client for the Streak REST API
 
-{<img src="https://travis-ci.org/kredei/streak_client.png" />}[https://travis-ci.org/kredei/streak_client]
-{<img src="https://codeclimate.com/github/kredei/streak_client.png" />}[https://codeclimate.com/github/kredei/streak_client]
-
 This client wraps the REST API for Streak, a Gmail CRM tool provided by the folks at {Rewardly}[http://blog.streak.com].
 
 == Usage
@@ -10,7 +7,7 @@ This client wraps the REST API for Streak, a Gmail CRM tool provided by the folk
 Set it up:
 
   require 'streak_client'
-  StreakClient.api_key = YOUR_API_KEY
+  Set ENV['STREAK_API_KEY']
 
 Create resources:
 
@@ -38,9 +35,4 @@ The following resources are not yet supported: fields, reminders, files, search.
 
 == Contributing
 
-Feel free to submit pull requests via Github. Include tests please.  
-
-== Credits & License
-
-This client was written by {Kristof}[http://www.kristof.me] for the fine folks at {TurningArt}[http://www.turningart.com]. It is released under the MIT license (see LICENSE). 
-
+Feel free to submit pull requests via Github. Include tests please.

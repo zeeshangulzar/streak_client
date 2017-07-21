@@ -66,6 +66,11 @@ module StreakClient
         RestClient.post(Field.instance_api_url(boxKey, field_key), {value: value}.to_json, content_type: :json))
     end
 
+    def add_thread(thread_gmail_id)
+      response = MultiJson.load(
+          RestClient.put(Box.instance_api_url(boxKey) + '/threads', "threadGmailId=#{thread_gmail_id}"))
+    end
+
   end
 
 end
