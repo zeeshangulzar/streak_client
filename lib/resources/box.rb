@@ -17,8 +17,8 @@ module StreakClient
       StreakClient.api_url + "/pipelines/#{pipeline_key}/boxes"
     end
 
-    def self.instance_api_url(box_key)
-      StreakClient.api_url + "/boxes/#{box_key}"
+    def self.instance_api_url(box_key, api_version = 'v1')
+      StreakClient.api_url(api_version) + "/boxes/#{box_key}"
     end
 
     def self.create(pipelineKey, attributes)
@@ -69,6 +69,11 @@ module StreakClient
     def add_thread(thread_gmail_id)
       response = MultiJson.load(
           RestClient.put(Box.instance_api_url(boxKey) + '/threads', "threadGmailId=#{thread_gmail_id}"))
+    end
+
+    def add_task(text, due_date)
+      response = MultiJson.load(
+          RestClient.post(Box.instance_api_url(boxKey, 'v2') + '/tasks', { text: text, dueDate: due_date }))
     end
 
   end

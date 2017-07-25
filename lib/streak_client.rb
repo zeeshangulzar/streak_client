@@ -15,7 +15,6 @@ module StreakClient
   @@api_protocol = "https"
   @@api_key = nil
   @@api_base_url = "www.streak.com/api"
-  @@api_version = "v1"
 
   def self.api_key=(key)
     @@api_key = key
@@ -33,11 +32,7 @@ module StreakClient
     @@api_protocol
   end
 
-  def self.api_version
-    @@api_version
-  end
-
-  def self.api_url
+  def self.api_url(api_version = 'v1')
     "#{api_protocol}://#{api_key}@#{api_base_url}/#{api_version}"
   end
 

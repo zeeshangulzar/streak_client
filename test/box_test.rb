@@ -56,5 +56,9 @@ describe StreakClient::Box do
   it "can add a thread" do
     # TODO
   end
+
+  it "can add a task" do
+    # TODO
+  end
 end
 
