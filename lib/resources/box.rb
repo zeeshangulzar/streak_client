@@ -63,6 +63,37 @@ module StreakClient
         {name: name, notes: notes, stageKey: stageKey}.to_json, content_type: :json)
     end
 
+    # Matches Field keys with actual values taken from the given Pipeline
+    # Returns a hash
+    def read_fields(pipeline_key)
+      pipeline_fields = Pipeline.find(pipeline_key).fields
+
+      response = Hash.new
+
+      fields.each do |box_field|
+        next unless box_field[1].present?
+        full_field = pipeline_fields.find { |pf| pf.key == box_field[0] }
+
+        field_name = full_field.name
+        field_value = case full_field.type
+          when 'TAG'
+            full_field.tagSettings['tags'].select { |tag| tag['key'].in? box_field[1] }.map { |f| f['tag'] }
+          when 'DROPDOWN'
+            full_field.dropdownSettings['items'].find { |item| item['key'] == box_field[1] }['name']
+          when 'DATE'
+            Time.at(box_field[1]/1000).to_date
+          when 'PERSON'
+            box_field[1].map { |person| "#{person['fullName']} (#{person['email']})" }
+          else # 'TEXT_INPUT', 'CHECKBOX', or other
+            box_field[1]
+        end
+
+        response[field_name] = field_value
+      end
+
+      response
+    end
+
     def add_comment(message)
       response = MultiJson.load(
         RestClient.put(Box.instance_api_url(boxKey) + "/comments", "message=#{message}"))
