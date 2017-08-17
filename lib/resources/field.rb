@@ -2,7 +2,7 @@ module StreakClient
 
   class Field
 
-    attr_accessor :key, :name, :type
+    attr_accessor :key, :name, :type, :tagSettings
 
     def initialize(attributes)
       attributes.each do |attr_name, attr_value|

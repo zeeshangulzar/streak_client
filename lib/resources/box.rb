@@ -38,6 +38,13 @@ module StreakClient
       response = MultiJson.load(RestClient.get(self.instance_api_url(nil)))
       response.map {|box_attributes| self.new(box_attributes) }
     end
+
+    def self.search_by_name(box_name)
+      response = MultiJson.load(
+          RestClient.get(StreakClient.api_url + "/search?name=#{box_name}"))
+
+      return response['results']['boxes']
+    end
   
     def newsfeed
       response = MultiJson.load(
