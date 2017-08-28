@@ -1,14 +1,16 @@
-require 'minitest/spec'
-require 'minitest/autorun'
 require 'test_helper'
 
 describe StreakClient::Pipeline do
 
-  before(:each) do
-    @pipeline = StreakClient::Pipeline.create(name: "Test", description: "T")
+  before do
+    @pipeline = StreakClient::Pipeline.create(
+        name: "Test Pipeline",
+        description: "Test pipeline for streak_client gem.",
+        stageNames: "Test Stage")
   end
 
-  after(:each) do
+  after do
+    @pipeline.boxes.each { |box| StreakClient::Box.delete(box.boxKey) }
     StreakClient::Pipeline.delete(@pipeline.pipelineKey)
   end
 
@@ -18,7 +20,7 @@ describe StreakClient::Pipeline do
 
   it "can find one" do
     found = StreakClient::Pipeline.find(@pipeline.pipelineKey)
-    found.name.must_equal "Test"
+    found.name.must_equal "Test Pipeline"
   end
 
   it "can find all" do
@@ -33,21 +35,20 @@ describe StreakClient::Pipeline do
 
   it "can add and list stages" do
     @pipeline.add_stage(name: "Stage 1")
-    @pipeline.stages.first.name.must_equal "Stage 1"
+    @pipeline.stages.last.name.must_equal "Stage 1"
   end
 
   it "can edit its properties" do
-    pipeline_key = @pipeline.pipelineKey
     @pipeline.name = "New Name"
     @pipeline.save!
-    changed_pipeline = StreakClient::Pipeline.find(pipeline_key)
+    changed_pipeline = StreakClient::Pipeline.find(@pipeline.pipelineKey)
     changed_pipeline.name.must_equal "New Name"
   end
 
   it "can add and list fields" do
-    @pipeline.add_field(name: "Person", type: "PEOPLE")
-    @pipeline.fields.first.name.must_equal "Person"
+    @pipeline.add_field(name: "Test Field", type: "TEXT_INPUT")
+    @pipeline.fields.last.name.must_equal "Test Field"
   end
-  
+
 end
 

@@ -1,5 +1,3 @@
-require 'minitest/spec'
-require 'minitest/autorun'
 require 'test_helper'
 
 describe StreakClient::User do
