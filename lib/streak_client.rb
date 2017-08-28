@@ -2,13 +2,14 @@ require 'rest-client'
 require 'multi_json'
 
 require 'resources/box'
+require 'resources/field'
 require 'resources/newsfeed'
 require 'resources/pipeline'
 require 'resources/snippet'
 require 'resources/stage'
+require 'resources/task'
 require 'resources/thread'
 require 'resources/user'
-require 'resources/field'
 
 module StreakClient
 

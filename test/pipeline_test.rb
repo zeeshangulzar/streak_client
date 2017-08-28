@@ -3,10 +3,7 @@ require 'test_helper'
 describe StreakClient::Pipeline do
 
   before do
-    @pipeline = StreakClient::Pipeline.create(
-        name: "Test Pipeline",
-        description: "Test pipeline for streak_client gem.",
-        stageNames: "Test Stage")
+    @pipeline = StreakClient::Pipeline.create(name: "Test", description: "T", stageNames: "Test Stage")
   end
 
   after do

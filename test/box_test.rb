@@ -3,11 +3,12 @@ require 'test_helper'
 describe StreakClient::Box do
 
   before(:each) do
-    @pipeline = StreakClient::Pipeline.create(name: "Test", description: "T")
-    @box = StreakClient::Box.create(@pipeline.pipelineKey, {name: "Test Box"})
+    @pipeline = StreakClient::Pipeline.create(name: "Test", description: "T", stageNames: "Test Stage")
+    @box = StreakClient::Box.create(@pipeline.pipelineKey, { name: "Test Box" })
   end
 
   after(:each) do
+    @pipeline.boxes.each { |box| StreakClient::Box.delete(box.boxKey) }
     StreakClient::Pipeline.delete(@pipeline.pipelineKey)
   end
 
