@@ -114,6 +114,17 @@ module StreakClient
           RestClient.post(Box.instance_api_url(boxKey, 'v2') + '/tasks', { text: text, dueDate: due_date }))
     end
 
+    def list_tasks
+      response = MultiJson.load(
+          RestClient.get(Box.instance_api_url(boxKey, 'v2') + '/tasks'))
+
+      return response['results']
+    end
+
+    def delete_task(task_key)
+      StreakClient::Task.delete(task_key)
+    end
+
   end
 
 end

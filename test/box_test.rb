@@ -3,7 +3,7 @@ require 'test_helper'
 describe StreakClient::Box do
 
   before(:each) do
-    @pipeline = StreakClient::Pipeline.create(name: "Test", description: "T", stageNames: "Test Stage")
+    @pipeline = StreakClient::Pipeline.create(name: "Test Boxes", description: "T", stageNames: "Test Stage")
     @box = StreakClient::Box.create(@pipeline.pipelineKey, { name: "Test Box" })
   end
 
@@ -23,7 +23,10 @@ describe StreakClient::Box do
 
   it "can delete one" do
     StreakClient::Box.delete(@box.boxKey)
-    StreakClient::Box.all.size.must_equal 0
+
+    assert_raises(RestClient::NotFound) do
+      StreakClient::Box.find(@box.boxKey)
+    end
   end
 
   it "can find all" do
@@ -56,8 +59,19 @@ describe StreakClient::Box do
     # TODO
   end
 
-  it "can add a task" do
-    # TODO
+  it 'can add and list tasks' do
+    @box.list_tasks.must_be_empty
+
+    @box.add_task('Test Task',(Time.now + 24*60*60).to_f.to_i * 1000)
+    @box.list_tasks.first['text'].must_equal 'Test Task'
   end
+
+  it 'can delete task' do
+    response = @box.add_task('Test Task',(Time.now + 24*60*60).to_f.to_i * 1000)
+    @box.delete_task(response['key'])
+
+    @box.list_tasks.must_be_empty
+  end
+
 end
 

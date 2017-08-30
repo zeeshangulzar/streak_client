@@ -25,6 +25,10 @@ module StreakClient
       self.new(MultiJson.load(RestClient.get(self.instance_api_url(task_key))))
     end
 
+    def self.delete(task_key)
+      RestClient.delete(self.instance_api_url(task_key))
+    end
+
     # Assigns Users to the Task\
     #
     # users_array example: [ { userKey: 'user1_key', email: 'user1@gmail.com' }, { ... }
