@@ -29,11 +29,22 @@ module StreakClient
       RestClient.delete(self.instance_api_url(task_key))
     end
 
-    # Assigns Users to the Task\
-    #
-    # users_array example: [ { userKey: 'user1_key', email: 'user1@gmail.com' }, { ... }
-    # Send empty array to delete all assignees
-    def assign_users(users_array)
+    # # Assigns Users to the Task
+    # #
+    # # users_array example: [ { userKey: 'user1_key', email: 'user1@gmail.com' }, { ... }
+    # # Send empty array to delete all assignees
+    # def assign_users(users_array)
+    #   response = MultiJson.load(
+    #       RestClient.post(
+    #           Task.instance_api_url(key),
+    #           { assignedToSharingEntries: users_array }.to_json,
+    #           content_type: :json))
+    # end
+
+    # Assigns Users to the Task by emails only
+    def assign_users_by_email(email_array)
+      users_array = email_array.map { |e| { email: e } }
+
       response = MultiJson.load(
           RestClient.post(
               Task.instance_api_url(key),
