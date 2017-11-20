@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = "streak_client"
-  s.version     = "0.1.5"
-  s.date        = "2017-09-01"
+  s.version     = "0.1.6"
+  s.date        = "2017-11-20"
   s.summary     = "Streak API Client"
   s.description = "Client for the Streak REST API"
   s.authors     = ["Aleksandar Abu Samra"]

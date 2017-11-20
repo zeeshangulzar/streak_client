@@ -29,6 +29,15 @@ module StreakClient
       RestClient.delete(self.instance_api_url(task_key))
     end
 
+    # params_hash example: {dueDate:1374271760000, text:newText}
+    def update(params_hash)
+      MultiJson.load(
+        RestClient.post(
+            Task.instance_api_url(key),
+            params_hash.to_json,
+            content_type: :json))
+    end
+
     # # Assigns Users to the Task
     # #
     # # users_array example: [ { userKey: 'user1_key', email: 'user1@gmail.com' }, { ... }
