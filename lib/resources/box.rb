@@ -2,7 +2,7 @@ module StreakClient
   
   class Box
 
-    attr_accessor :name, :notes, :stageKey, :fields, 
+    attr_accessor :name, :notes, :stageKey, :pipelineKey, :fields,
       :followerKeys, :boxKey
 
     def initialize(attributes)
@@ -58,6 +58,16 @@ module StreakClient
       response.map {|thread_attributes| Thread.new(thread_attributes) }
     end
 
+    def pipeline
+      @pipeline ||= Pipeline.find(pipelineKey)
+    end
+
+    def stage_name
+      @stages ||= pipeline.stages
+      stage = @stages.find { |stage| stage.key == stageKey }
+      stage.name
+    end
+
     def save!
       RestClient.post(Box.instance_api_url(boxKey), 
         {name: name, notes: notes, stageKey: stageKey}.to_json, content_type: :json)
@@ -65,9 +75,8 @@ module StreakClient
 
     # Matches Field keys with actual values taken from the given Pipeline
     # Returns a hash
-    def read_fields(pipeline_key)
-      pipeline_fields = Pipeline.find(pipeline_key).fields
-
+    def read_fields
+      pipeline_fields = pipeline.fields
       response = Hash.new
 
       fields.each do |box_field|
