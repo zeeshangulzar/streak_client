@@ -71,7 +71,6 @@ module StreakClient
       response = Hash.new
 
       fields.each do |box_field|
-        next unless box_field[1].present?
         full_field = pipeline_fields.find { |pf| pf.key == box_field[0] }
 
         field_name = full_field.name
