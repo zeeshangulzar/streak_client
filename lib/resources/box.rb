@@ -79,21 +79,25 @@ module StreakClient
       pipeline_fields = pipeline.fields
       response = Hash.new
 
-      fields.each do |box_field|
-        full_field = pipeline_fields.find { |pf| pf.key == box_field[0] }
+      pipeline_fields.each do |full_field|
+        box_field = fields.find { |bf| bf[0] == full_field.key }
 
         field_name = full_field.name
-        field_value = case full_field.type
-          when 'TAG'
-            full_field.tagSettings['tags'].select { |tag| tag['key'].in? box_field[1] }.map { |f| f['tag'] }
-          when 'DROPDOWN'
-            full_field.dropdownSettings['items'].find { |item| item['key'] == box_field[1] }['name']
-          when 'DATE'
-            Time.at(box_field[1]/1000).to_date
-          when 'PERSON'
-            box_field[1].map { |person| "#{person['fullName']} (#{person['email']})" }
-          else # 'TEXT_INPUT', 'CHECKBOX', or other
-            box_field[1]
+        field_value = []
+
+        if box_field.present?
+          field_value = case full_field.type
+            when 'TAG'
+              full_field.tagSettings['tags'].select { |tag| tag['key'].in? box_field[1] }.map { |f| f['tag'] }
+            when 'DROPDOWN'
+              full_field.dropdownSettings['items'].find { |item| item['key'] == box_field[1] }['name']
+            when 'DATE'
+              Time.at(box_field[1]/1000).to_date
+            when 'PERSON'
+              box_field[1].map { |person| "#{person['fullName']} (#{person['email']})" }
+            else # 'TEXT_INPUT', 'CHECKBOX', or other
+              box_field[1]
+          end
         end
 
         response[field_name] = field_value
