@@ -95,6 +95,13 @@ module StreakClient
               Time.at(box_field[1]/1000).to_date
             when 'PERSON'
               box_field[1].map { |person| "#{person['fullName']} (#{person['email']})" }
+            when 'TEAM_CONTACT'
+              results = ''
+              box_field[1].each do |id|
+                contact = get_contact(id)
+                results = results + "#{contact['givenName']} #{contact['familyName']} "
+              end
+              results.strip
             else # 'TEXT_INPUT', 'CHECKBOX', or other
               box_field[1]
           end
@@ -119,6 +126,10 @@ module StreakClient
     def add_thread(thread_gmail_id)
       response = MultiJson.load(
           RestClient.put(Box.instance_api_url(boxKey) + '/threads', "threadGmailId=#{thread_gmail_id}"))
+    end
+
+    def get_contact(id)
+      MultiJson.load(RestClient.get(StreakClient.api_url.gsub('/v1', '/v2') + "/contacts/#{id}"))
     end
 
     def add_task(text, due_date)
